@@ -7,12 +7,22 @@
 # anything else that needs to happen before your server is started
 # for the first time
 setup:
+	echo 'Installing dependencies and creating database'
+	bundle install
+	rake db:create
+	rake db:migrate
+	echo 'Done'
 
 # `make server` will be used after `make setup` in order to start
 # an http server process that listens on any unreserved port
-#	of your choice (e.g. 8080). 
+#	of your choice (e.g. 8080).
 server:
+	echo 'Starting server'
+	rails s -p 8080
 
 # `make test` will be used after `make setup` in order to run
 # your test suite.
 test:
+	echo 'Running test suite'
+	rspec spec/
+	echo 'Finished running tests'

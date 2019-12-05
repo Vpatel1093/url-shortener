@@ -1,0 +1,14 @@
+Notes:
+- The makefile has instructions on installing the application and running the local server on port 8080, essentially
+  Rails and its dependencies must be installed and the rails server must be specified to run on the designated port
+- To use the app, a user navigates to the root path (http://localhost:8080/) where they can enter the url they would
+  like shortened. They receive an error message should the url not be valid, otherwise they see a success message
+  with their shortened url which they can copy. Entering the shortened url in the browser will navigate the user to
+  the url they entered.
+
+Design Considerations:
+- The url the user inputs is sanitized when saving the record in order to properly redirect the user when they enter
+  the shortened url
+- RSpec was the test suite of choice, and the full suite can be ran via terminal with `rspec spec/`
+- Unobtrusive javascript was used rather than adding jquery for the backend call to create the slug as it comes packaged
+  with Rails. This was to minimize dependencies and improve load time of the page
