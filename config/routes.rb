@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
-  get 'url/new'
-  # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
+  root 'url#new'
+
+  get '/:shortened_url_token', to: 'url#show'
+  post '/shortened_urls' => 'url#create', format: :json
 end
