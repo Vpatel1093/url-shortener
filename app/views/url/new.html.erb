@@ -1,2 +1,63 @@
-<h1>Url#new</h1>
-<p>Find me in app/views/url/new.html.erb</p>
+<div class="container" id="url-shortener">
+  <div class="row">
+    <div class="col-2"></div>
+    <div class="col-8">
+      <h1 class="text-center">Welcome to URL shortener!</h1>
+      <h4 class="text-center">Enter your URL below</h4>
+    </div>
+    <div class="col-2"></div>
+  </div>
+  <div class="row">
+    <div class="col-2"></div>
+    <div class="col-8">
+      <%= form_with model: ShortenedUrl.new(original_url: ''), id: 'url-shortener-form', class: "form-group" do |form| %>
+        <%= form.text_field :url, class: "form-control" %><br>
+        <%= form.submit 'Create your link', class: "btn btn-dark btn-block" %>
+      <% end %>
+    </div>
+    <div class="col-2"></div>
+  </div>
+</div>
+
+<%= render partial: 'url/partials/display_url' %>
+<%= render partial: 'url/partials/display_url_error' %>
+
+<script type="text/javascript">
+  function hideResponseDivs() {
+    var divs = document.getElementsByClassName("url-shortener-response");
+    var i;
+    for (i = 0; i < divs.length; i++) {
+        divs[i].style.display = "none";
+    }
+  }
+
+  var alert = document.getElementById("close-alert");
+  if (alert) {
+    alert.addEventListener("click", function() {
+      document.getElementById("alert-div").style.display='none';
+    });
+  }
+
+  // https://stackoverflow.com/a/49236251
+  document.getElementById("copy-btn").addEventListener("click", function() {
+    var copyText = document.getElementById("shortened-url");
+    var textArea = document.createElement("textarea");
+    textArea.value = copyText.textContent;
+    document.body.appendChild(textArea);
+    textArea.select();
+    document.execCommand("Copy");
+    textArea.remove();
+  });
+
+  document.body.addEventListener("ajax:success", function(event) {
+    hideResponseDivs();
+    var detail = event.detail;
+    var data = detail[0], status = detail[1], xhr = detail[2];
+    document.getElementById("shortened-url").innerHTML = "localhost:8080/" + data;
+    document.getElementById("url-shortener-success").style.display = "block"
+  })
+  document.body.addEventListener("ajax:error", function(event) {
+    hideResponseDivs();
+    document.getElementById("url-shortener-error").style.display = "block"
+  })
+</script>
